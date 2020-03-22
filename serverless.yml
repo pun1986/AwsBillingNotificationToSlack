@@ -1,0 +1,21 @@
+service: billingnotificationtoslack
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ce:GetCostAndUsage"
+      Resource: "*"
+
+functions:
+  billing-notification-to-slack:
+    handler: index.handler
+    events:
+      - schedule: cron(0 0 * * ? *)
+    timeout: 300
+    environment:
+      SLACK_URL: "your slack incomming webhook url"
+      TZ: Asia/Tokyo
